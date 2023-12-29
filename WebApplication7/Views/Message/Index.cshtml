@@ -1,0 +1,80 @@
+﻿@model List<WebApplication7.Models.chat>
+
+<div class="container">
+    <div class="row">
+        <!-- Left panel with search bar -->
+        <div class="col-md-3">
+            <h3>Search Users</h3>
+            <!-- Add your user search form here -->
+            <input type="text" id="userSearch" placeholder="Search for users">
+
+            <h3>Chatted Users</h3>
+            <!-- Display the list of users with whom the current user has chatted -->
+            <ul>
+                @foreach (var user in Model.Select(m => m.Sender).Distinct())
+                {
+                    <li>
+                        <a href="@Url.Action("Chat", "Message", new { userId = user.Id })">@user.UserName</a>
+                    </li>
+                }
+            </ul>
+        </div>
+
+        <!-- Right panel for displaying the chat -->
+        <div class="col-md-9">
+            <h3 id="chatHeader">Chat</h3>
+            <div id="chatBox">
+                <!-- This is where the chat messages will be displayed -->
+            </div>
+            <div>
+                <h4>Upload Image</h4>
+                <input type="file" id="fileInput" />
+                <button onclick="uploadImage()">Upload</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts {
+    <script>
+        // JavaScript for handling user clicks and updating the chat box
+        function loadChat(userId) {
+            $("#chatBox").empty();
+            $.ajax({
+                url: "/Message/Chat?userId=" + userId,
+                method: "GET",
+                success: function (data) {
+                    $("#chatHeader").text("Chat with " + data.OtherUser.UserName);
+                    $.each(data, function (index, message) {
+                        $("#chatBox").append("<p>" + message.Sender.UserName + ": " + message.Content + "</p>");
+                    });
+                },
+                error: function () {
+                    console.log("Error loading chat");
+                }
+            });
+        }
+
+        function uploadImage() {
+            var fileInput = document.getElementById('fileInput');
+            var file = fileInput.files[0];
+            var formData = new FormData();
+            formData.append('file', file);
+
+            $.ajax({
+                url: "/Message/UploadImage",
+                method: "POST",
+                data: formData,
+                contentType: false,
+                processData: false,
+                success: function (data) {
+                    console.log("Image uploaded: " + data.FileName);
+                    // Handle the uploaded image (e.g., display it in the chat)
+                },
+                error: function () {
+                    console.log("Error uploading image");
+                }
+            });
+        }
+    </script>
+}

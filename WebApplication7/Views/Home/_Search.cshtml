@@ -1,0 +1,30 @@
+﻿<div>
+    @using (Html.BeginForm("Index", "Home", FormMethod.Post, new { role = "search", @class = "navbar-form navbar-left" }))
+    {
+        <div class="form-group-lg">
+            <input type="text" name="query" class="form-control search-input" placeholder="Search users">
+        </div>
+        @*<button type="submit" class="btn btn-default">Search</button>*@
+
+        if (Model is WebApplication7.Models.PostViewModel && (Model as WebApplication7.Models.PostViewModel).SearchResults != null && (Model as WebApplication7.Models.PostViewModel).SearchResults.Count > 0)
+        {
+            <ul class="search-results">
+                <button type="button" class="btn-close close-search-results">
+                    <span aria-hidden="true">Search Results &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&times;</span>
+                </button>
+
+                @*<button type="button" class="btn-close" aria-label="Close"></button>*@
+                @foreach (var user in (Model as WebApplication7.Models.PostViewModel).SearchResults)
+                {
+                    <li style="list-style-type: none; display: flex; justify-content: space-between; list-style: none;">
+                        <span>
+                            <a style="text-align: left;" href="@Url.Action("UserProfile", "Home", new { userId = user.Id })"><img src="@Url.Content("~/Images/ProfileImages/" + user.ProfileImagePath)" alt="User Profile Image" style="height: 30px; width: 30px; border-radius: 50%;" /></a>
+                        </span>
+                        <a style="text-align: left;" href="@Url.Action("UserProfile", "Home", new { userId = user.Id })">@user.UserName</a>
+                    </li>
+                }
+            </ul>
+        }
+    }
+</div>
+

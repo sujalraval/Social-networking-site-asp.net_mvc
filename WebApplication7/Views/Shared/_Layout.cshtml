@@ -1,0 +1,105 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - Social Networking Site</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+
+    <link rel="icon" href="~/Content/images/fav.png" type="image/png" sizes="16x16">
+
+    <link rel="stylesheet" href="~/Content/css/main.min.css">
+    <link rel="stylesheet" href="~/Content/css/style.css">
+    <link rel="stylesheet" href="~/Content/css/color.css">
+    <link rel="stylesheet" href="~/Content/css/responsive.css">
+    @*<style>
+        /* Add or update these styles in your CSS file */
+        .logo {
+            margin-left: 20px; /* Adjust the left margin as needed */
+        }
+        .theme-layout{
+            position:fixed;
+        }
+        /* If you want the logo to be fixed at the top-left corner */
+        .logo {
+            position: fixed;
+            top: 10px; /* Adjust the top position as needed */
+            left: 20px; /* Adjust the left position as needed */
+        }
+
+        /* Add or update these styles in your CSS file */
+        .search-input {
+            width: 200px; /* Adjust the width as needed */
+            font-size: 14px; /* Adjust the font size as needed */
+        }
+
+        .search-results {
+            list-style: none;
+            padding: 0;
+        }
+
+        .close-search-results {
+            margin-left: 10px;
+        }
+    </style>*@    
+</head>
+<body>
+    <div class="theme-layout">
+
+        <div class="topbar stick">
+            <div class="logo" style="">
+                <a href="/"><img src="~/Content/images/logo.png" alt=""></a>
+            </div>
+
+            <div class="top-area" style="font-size: 16px;">
+                <ul class="main-menu">
+                    <li class="me-3">
+                        @Html.ActionLink("Home", "Index", "Home")
+                    </li>
+                    <li class="me-3">
+                        @Html.ActionLink("About Us", "About", "Home")
+                    </li>
+                    <li class="me-3">
+                        @Html.ActionLink("Contact Us", "Contact", "Home")
+                    </li>
+                    @*<li class="me-3">
+                        <div class="dropdowns">
+                            <ul class="drops-menu">
+                                <li>
+                                    <a href="notifications.html" title="">
+                                        <img src="~/Content/images/resources/thumb-1.jpg" alt="">
+                                        <div class="mesg-meta">
+                                            <h6>sarah Loren</h6>
+                                        </div>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>*@
+                </ul>
+                
+                @Html.Partial("_LoginPartial")
+
+            </div>
+        </div>
+
+    </div>
+    @RenderBody()
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+    <script>
+    // Add this script to handle the close button click event
+    document.addEventListener("DOMContentLoaded", function () {
+        var closeBtn = document.querySelector('.close-search-results');
+        var searchResults = document.querySelector('.search-results');
+
+        closeBtn.addEventListener('click', function () {
+            searchResults.style.display = 'none';
+        });
+    });
+    </script>
+</body>
+</html>

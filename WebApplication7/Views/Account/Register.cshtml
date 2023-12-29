@@ -1,0 +1,127 @@
+﻿@model WebApplication7.Models.RegisterViewModel
+@*@using WebApplication7.Models*@
+@*@model LoginViewModel*@
+
+@{
+    ViewBag.Title = "Register";
+    Layout = "~/Views/Shared/_RegisterLayout.cshtml";
+}
+<link href="~/Content/css/main.min.css" rel="stylesheet" />
+<link href="~/Content/css/color.css" rel="stylesheet" />
+<link href="~/Content/css/style.css" rel="stylesheet" />
+<link href="~/Content/css/responsive.css" rel="stylesheet" />
+<style>
+    .custom-file-upload {
+        display: inline-block;
+        padding: 6px 12px;
+        cursor: pointer;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        font-size: 13px;
+        height: 40px;
+        width: 300px;
+        text-align: center;
+        line-height: 28px;
+    }
+
+        .custom-file-upload input {
+            display: none;
+        }
+</style>
+<div class="theme-layout">
+    <div class="container-fluid pdng0">
+        <div class="row merged">
+            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                <div class="land-featurearea">
+                    <div class="land-meta">
+                        <h1>Winku</h1>
+                        <p class="mb-5">
+                            Winku is free to use for as long as you want with two active projects.
+                        </p>
+                        <div class="friend-logo mb-5 mt-5">
+                            <span><img src="~/Content/images/wink.png" /></span>
+                        </div>
+                        <a href="#" title="" class="folow-me">Follow Us on</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                <div class="login-reg-bg">
+                    <div class="log-reg-area sign">
+                        <h2 class="log-title">Register</h2>
+
+
+                        @using (Html.BeginForm("Register", "Account", FormMethod.Post, new { enctype = "multipart/form-data", @class = "form-horizontal", role = "form" }))
+                        {
+                            @Html.AntiForgeryToken()
+                            @Html.ValidationSummary("", new { @class = "text-danger" })
+                            <div class="form-group">
+                                @*@Html.LabelFor(m => m.UserName, new { @class = "col-md-2 control-label" })*@
+                                <div class="col-md-10">
+                                    @Html.TextBoxFor(m => m.UserName, new { @class = "form-control border-bottom", style = "font-size: 13px; height: 40px; width: 300px;", placeholder = "User Name" })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                @*@Html.LabelFor(m => m.Email, new { @class = "col-md-2 control-label" })*@
+                                <div class="col-md-10">
+                                    @Html.TextBoxFor(m => m.Email, new { @class = "form-control border-bottom", style = "font-size: 13px; height: 40px; width: 300px;", placeholder = "Email" })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                @*@Html.LabelFor(m => m.Password, new { @class = "col-md-2 control-label" })*@
+                                <div class="col-md-10">
+                                    @Html.PasswordFor(m => m.Password, new { @class = "form-control border-bottom", style = "font-size: 13px; height: 40px; width: 300px;", placeholder = "Password" })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                @*@Html.LabelFor(m => m.ConfirmPassword, new { @class = "col-md-2 control-label" })*@
+                                <div class="col-md-10">
+                                    @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control border-bottom", style = "font-size: 13px; height: 40px; width: 300px;", placeholder = "Confirm Password" })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                @*<div class="col-md-10">
+            <label for="ProfileImage" class="custom-file-upload">
+                Profile Image
+                <input type="file" id="ProfileImage" class="form-control border" style="display: none;" accept="image/*" />
+            </label>
+        </div>*@
+                                <div class="col-md-10">
+                                    <input type="file" name="ProfileImage" id="ProfileImage" />
+                                    @Html.ValidationMessageFor(m => m.ProfileImage, "", new { @class = "text-danger" ,accept="image/*"})
+                                </div>
+                            </div>
+
+                            <div class="submit-btns">
+                                <input type="submit" value="Register" class="btn btn-primary text-center" style="font-size: 16px; height: 40px; width: 100px;" />
+                            </div>
+                        }
+                        <div class="mt-3">
+                            <p>
+                                @Html.ActionLink("Already Registered ?", "Login")
+                            </p>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script data-cfasync="false" src="../../cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
+<script src="~/Content/js/main.min.js"></script>
+<script src="~/Content/js/script.js"></script>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+<script>
+    // JavaScript to trigger the file input when the custom button is clicked
+    document.getElementById('ProfileImage').addEventListener('change', function () {
+        var fileInput = document.getElementById('ProfileImage');
+        var label = fileInput.files.length > 0 ? fileInput.files[0].name : 'Profile Image';
+        this.previousElementSibling.innerText = label;
+    });
+</script>

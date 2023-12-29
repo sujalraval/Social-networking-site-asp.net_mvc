@@ -1,0 +1,14 @@
+﻿@model List<WebApplication7.Models.CommentViewModel>
+
+<div class="comments-list">
+    @foreach (var comment in Model)
+    {
+        <div class="comment">
+            <img src="@comment.ProfileImage" alt="Profile Image" class="profile-image" />
+            <span class="username">@comment.UserName</span>
+            <span class="comment-text">@comment.Text</span>
+            <span class="comment-timestamp">@comment.CommentedOn.ToString("yyyy-MM-dd HH:mm:ss")</span>
+        </div>
+    }
+</div>
+

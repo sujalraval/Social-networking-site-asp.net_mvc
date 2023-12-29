@@ -1,0 +1,17 @@
+﻿
+@model List<WebApplication7.Models.RegisterViewModel>
+
+
+<ul id="people-list" class="friendz-list">
+    @foreach (var user in Model)
+    {
+        <li>
+            <figure>
+                <img src="@Url.Content(user.ProfileImagePath)" alt="">
+            </figure>
+            <div class="friendz-meta">
+                <a href="@Url.Action("UserProfile", "Home", new { userId = user.UserId })">@user.UserName</a>
+            </div>
+        </li>
+    }
+</ul>

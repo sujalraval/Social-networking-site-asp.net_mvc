@@ -1,0 +1,454 @@
+﻿@model WebApplication7.Models.PostViewModel
+@using Microsoft.AspNet.Identity
+@using Microsoft.AspNet.Identity.EntityFramework
+@using System
+@using System.Collections.Generic
+@using System.Security.Principal
+
+@{ ViewBag.Title = "Home Page"; }
+<html>
+<head>
+    <link href="~/Content/css/main.min.css" rel="stylesheet" />
+    <link href="~/Content/css/color.css" rel="stylesheet" />
+    <link href="~/Content/css/style.css" rel="stylesheet" />
+    <link href="~/Content/css/responsive.css" rel="stylesheet" />
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+</head>
+<body>
+    <section>
+        <div class="gap gray-bg">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="row" id="page-contents">
+                            <!-- left side bar-->
+                            <div class="col-lg-3">
+                                <aside class="sidebar static">
+                                    <!-- Shortcuts -->
+                                    <div class="widget">
+                                        <h4 class="widget-title">Shortcuts</h4>
+                                        <ul class="naves">
+                                            <li>
+                                                <i class="ti-files"></i>
+                                                <a href="@Url.Action("UserProfile", "Home", new { userId = User.Identity.GetUserId() })">View Profile</a>
+                                                @*<a href="fav-page.html" title="">My pages</a>*@
+                                            </li>
+                                            <li>
+                                                <i class="ti-video-camera"></i>
+                                                @Html.ActionLink("EditProfile", "EditProfile", "Account", routeValues: null, htmlAttributes: new { title = "Edit Profile" })
+                                            </li>
+                                            <li>
+                                                <i class="ti-pencil"></i>
+                                                <a href="@Url.Action("ChangePassword", "Manage", new { userId = User.Identity.GetUserId() })">Change Password</a>
+                                                @*<a href="fav-page.html" title="">My pages</a>*@
+                                            </li>
+                                            <li>
+                                                <i class="ti-power-off"></i>
+                                                <a href="javascript:document.getElementById('logoutForm').submit()">Logout</a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <!-- Shortcuts -->
+                                    <div class="widget">
+                                        <div class="banner medium-opacity bluesh">
+                                            <div class="bg-image" style="background-image: url(/Content/images/resources/baner-widgetbg.jpg)"></div>
+                                            <div class="baner-top">
+                                                <span><img alt="" src="/Content/images/book-icon.png"></span>
+                                                <i class="fa fa-ellipsis-h"></i>
+                                            </div>
+                                            <div class="banermeta">
+                                                <p>
+                                                    create your own favourit page.
+                                                </p>
+                                                <span>like them all</span>
+                                                <a data-ripple="" title="" href="#">start now!</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- Display Followers -->
+                                    <div class="widget stick-widget">
+                                        <h4 class="widget-title">Followers</h4>
+                                        <ul class="followers">
+                                            @if (Model.Followings != null && Model.Followings.Any())
+                                            {
+                                                foreach (var follower in Model.Followings)
+                                                {
+                                                    <li>
+                                                        <figure><img src="@Url.Content("~/Images/ProfileImages/" + follower.ProfileImagePath)" alt="" style="height:45px;width:45px;"></figure>
+                                                        <div class="friend-meta">
+                                                            <h4><a href="@Url.Action("UserProfile", "Home", new { userId = follower.Id })" title="">@follower.UserName</a></h4>
+                                                            <!-- You can add more follower information as needed -->
+                                                        </div>
+                                                    </li>
+                                                }
+                                            }
+                                        </ul>
+                                    </div>
+                                    <!-- End Display Followers -->
+                                </aside>
+                            </div>
+                            <!-- left side bar-->
+                            <!-- center tab-->
+
+                            <div class="col-lg-6">
+                                <!-- add postṣ new box -->
+                                @if (User.Identity.IsAuthenticated)
+                                {
+                                    <div class="central-meta">
+                                        <div class="new-postbox" style=" margin: 0; font-family: inherit; font-size: inherit; line-height: inherit;">
+                                            <figure>
+                                                <img src="@Url.Content("~/Images/ProfileImages/" + ViewBag.ProfileImagePath)" alt="Profile Image" style="height:57.23px;width:57.23px; " />
+                                            </figure>
+                                            <div class="newpst-input">
+                                                @using (Html.BeginForm("CreatePost", "Home", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                                                {
+                                                    @Html.AntiForgeryToken()
+                                                    @Html.ValidationSummary(true)
+
+                                                    <textarea style="width:470px; height:40.67px;" placeholder="Write a new post..." name="NewPostText"></textarea>
+                                                    @Html.ValidationMessageFor(model => model.NewPostText)
+
+                                                    <div class="attachments" style="width:470px; height:40.67px;">
+                                                        <ul style="font-size:15px;">
+                                                            <li>
+                                                                <i class="fa fa-image"></i>
+                                                                <label class="fileContainer">
+                                                                    <input type="file" name="imageFile" id="imageFile" accept="image/*">
+                                                                </label>
+                                                            </li>
+                                                            <li>
+                                                                <i class="fa fa-video-camera"></i>
+                                                                <label class="fileContainer">
+                                                                    <input type="file" name="videoFile" id="videoFile" accept="video/*">
+                                                                </label>
+                                                            </li>
+                                                            <li>
+                                                                <button type="submit">Post</button>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                }
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <p>Welcome, Guest!</p>
+                                }
+                                <!-- add postṣ new box -->
+                                <!-- displaying posts -->
+                                <div class="">
+                                    @if (Model.Posts != null && Model.Posts.Count > 0)
+                                    {
+                                        foreach (var post in Model.Posts)
+                                        {
+                                            <div class="central-meta item">
+                                                <div class="user-post">
+                                                    <div class="friend-info">
+                                                        <figure>
+                                                            @if (!string.IsNullOrEmpty(post.User?.ProfileImagePath))
+                                                            {
+                                                                <a href="@Url.Action("UserProfile", "Home", new { userId = post.User.Id })">
+                                                                    <img src="@Url.Content("~/Images/ProfileImages/" + post.User.ProfileImagePath)" alt="User Profile Image" style="border-radius: 50%;height:44px; width:44px ;" />
+                                                                </a>
+                                                            }
+                                                        </figure>
+                                                        <div class="friend-name">
+                                                            <ins>
+                                                                <a href="@Url.Action("UserProfile", "Home", new { userId = post.User.Id })">@post.User.UserName</a>
+                                                                <span style="font-size: 15px; color: #545454;">
+                                                                    <!-- Display follow or unfollow link based on whether the user is already followed or not -->
+                                                                    @if (!post.User.IsCurrentUser(User.Identity.GetUserId()))
+                                                                    {
+                                                                        if (post.User.IsFollowed(User.Identity.GetUserId()))
+                                                                        {
+                                                                            <a href="#" class="unfollow-link" data-user-id="@post.User.Id" style="border: 1px solid #ccc; margin-left: 310px; padding: 5px; display: inline-block;">Unfollow</a>
+                                                                        }
+                                                                        else
+                                                                        {
+                                                                            <a href="#" class="follow-link" data-user-id="@post.User.Id" style="border: 1px solid #ccc; margin-left: 310px; padding: 5px; display: inline-block;">Follow</a>
+                                                                        }
+                                                                    }
+                                                                </span>
+
+                                                            </ins>
+
+                                                            <span>published: @post.PostedOn.ToString("dd-MM-yyyy HH:mm:ss")</span>
+                                                        </div>
+                                                        <div class="post-meta">
+                                                            <div class="description">
+
+                                                                <p>
+                                                                    @post.Text
+                                                                </p>
+                                                            </div>
+                                                            @if (!string.IsNullOrEmpty(post.ImagePath))
+                                                            {
+                                                                <img src="@Url.Content(post.ImagePath)" alt="Post Image" style="max-width: 100%;" />
+                                                            }
+                                                            @if (!string.IsNullOrEmpty(post.VideoPath))
+                                                            {
+                                                                <video style="width:540px; height:345px;" controls>
+                                                                    <source src="@Url.Content(post.VideoPath)" type="video/mp4">
+                                                                    Your browser does not support the video tag.
+                                                                </video>
+                                                            }
+                                                            <div class="we-video-info">
+                                                                <ul>
+                                                                    <li>
+                                                                        <span class="like" data-toggle="tooltip"
+                                                                              title="like">
+                                                                            <!-- like and unlike functionality -->
+                                                                            @if (User.Identity.IsAuthenticated)
+                                                                            {
+                                                                                if (!post.Likes.Any(like => like.UserId == User.Identity.GetUserId()))
+                                                                                {
+                                                                                    <a href="#" class="like-link" id="like" data-post-id="@post.Id">Like</a> }
+                                                                                if (post.Likes.Any(like => like.UserId == User.Identity.GetUserId()))
+                                                                                {
+                                                                                    <a href="#" class="unlike-link" id="unlike" data-post-id="@post.Id">Unlike</a>}
+                                                                            }
+                                                                            <!-- Display total likes count -->
+                                                                            <span class="show-likes-link" data-post-id="@post.Id">Total Likes: @post.Likes.Count</span>
+                                                                        </span>
+                                                                    </li>
+                                                                </ul>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <ul>
+                                                        <li class="post-comment" style="list-style:none;">
+                                                            <div class="comet-avatar">
+                                                                <a href="@Url.Action("UserProfile", "Home", new { userId = User.Identity.GetUserId() })">
+                                                                    <img src="@Url.Content("~/Images/ProfileImages/" + ViewBag.ProfileImagePath)" alt="Profile Image" style="border-radius: 50%;height:33px; width:33px ;" />
+                                                                </a>
+                                                            </div>
+                                                            <div class="post-comt-box">
+                                                                <div class="comments-section">
+                                                                    <!-- Input field for adding comments -->
+                                                                    <input type="text" class="comment-input" data-post-id="@post.Id" placeholder="Post your comment" />
+
+                                                                    <div class="comments-list">
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        }
+                                    }
+
+                                </div>
+                                <!-- displaying posts -->
+
+                            </div>
+                            <div class="col-lg-3">
+                                <aside class="sidebar static">
+                                    <div class="widget">
+                                        <h4 class="widget-title">Your page</h4>
+                                        <div class="your-page">
+                                            <figure>
+                                                <a href="#" title="">
+                                                    <img src="@Url.Content("~/Images/ProfileImages/" + ViewBag.ProfileImagePath)" alt="Profile Image" style="height:60px;width:60px; border-radius:500px;" />
+
+                                                </a>
+                                            </figure>
+                                            <br />
+                                            <div class="page-meta">
+                                                <a href="@Url.Action("UserProfile", "Home", new { userId = User.Identity.GetUserId() })">My page</a>
+                                                <br />
+                                                <span>
+                                                    <i class="ti-user"></i><a href="" title="">Followers  <em>@Model.FollowingCount</em></a>
+                                                </span><br />
+                                                <span>
+                                                    <i class="ti-user"></i>Followings <em>@Model.FollowersCount</em>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- page like widget end-->
+                                    <!-- search friends -->
+
+
+                                    <div class="widget friend-list stick-widget" style="position:absolute;">
+                                        <h4 class="widget-title">Search</h4>
+                                        <ul class="followers">
+                                            <!-- Search Form -->
+                                            @using (Html.BeginForm("Index", "Home", FormMethod.Post, new { role = "search", @class = "navbar-form navbar-left" }))
+                                            {
+                                                <div class="form-group">
+                                                    <input type="text" name="query" class="form-control" placeholder="Search users">
+                                                </div>
+
+                                                if (Model != null && Model.SearchResults != null && Model.SearchResults.Count > 0)
+                                                {
+                                                    <ul>
+                                                        @foreach (var user in Model.SearchResults)
+                                                        {
+                                                            <li>
+
+                                                                <span>
+                                                                    <img src="@Url.Content("~/Images/ProfileImages/" + user.ProfileImagePath)" alt="User Profile Image" style="height: 50px; width: 50px; border-radius: 50%;" />
+                                                                    <a href="@Url.Action("UserProfile", "Home", new { userId = user.UserId })">@user.UserName</a>
+                                                                </span>
+                                                            </li>
+                                                        }
+                                                    </ul>
+                                                }
+                                            }
+                                            <!-- End Search Form -->
+                                        </ul>
+
+                                    </div>
+                                    <!-- Display Followers -->
+                                    <div class="widget stick-widget">
+                                        <h4 class="widget-title">Followings</h4>
+                                        <ul class="followers">
+                                            @if (Model != null && Model.Followers != null)
+                                            {
+                                                foreach (var follower in Model.Followers)
+                                                {
+                                                    <li>
+                                                        <figure><img src="@Url.Content("~/Images/ProfileImages/" + follower.ProfileImagePath)" alt="" style="height:45px;width:45px;"></figure>
+                                                        <div class="friend-meta">
+                                                            <h4><a href="@Url.Action("UserProfile", "Home", new { userId = follower.Id })" title="">@follower.UserName</a></h4>
+                                                            <!-- You can add more follower information as needed -->
+                                                        </div>
+                                                    </li>
+                                                }
+                                            }
+                                        </ul>
+                                    </div>
+                                    <!-- Display Followers -->
+                                </aside>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+    </section>
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script data-cfasync="false" src="../../cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
+    <script src="~/Content/js/main.min.js"></script>
+    <script src="~/Content/js/script.js"></script>
+    <script src="~/Content/js/map-init.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA8c55_YHLvDHGACkQscgbGLtLRdxBDCfI"></script>
+    <script>
+        // JavaScript/jQuery for handling AJAX actions
+        $(".follow-link").click(function (e) {
+            e.preventDefault();
+            var userIdToFollow = $(this).data("user-id");
+            var $followLink = $(this);
+
+            $.post("/Home/Follow", { userIdToFollow: userIdToFollow }, function () {
+                // Handle the success, e.g., update UI or show a success message
+
+                // Reload the page after a successful follow
+                location.reload();
+            });
+        });
+
+
+        $(".unfollow-link").click(function (e) {
+            e.preventDefault();
+            var userIdToUnfollow = $(this).data("user-id");
+            var $unfollowLink = $(this);
+
+            $.post("/Home/Unfollow", { userIdToUnfollow: userIdToUnfollow }, function () {
+                // Handle the success, e.g., update UI or show a success message
+
+                location.reload(); // Reload the page after a successful unfollow
+            });
+        });
+
+
+
+        // JavaScript/jQuery for handling AJAX actions
+        $(".like-link").click(function (e) {
+            //console.log("cliked");
+            e.preventDefault();
+            var postId = $(this).data("post-id");
+
+            $.post("/Home/Like", { postId: postId }, function () {
+                location.reload();
+            });
+        });
+
+        $(".unlike-link").click(function (e) {
+            //console.log("cliked");
+            e.preventDefault();
+            var postId = $(this).data("post-id");
+
+            $.post("/Home/Unlike", { postId: postId }, function () {
+                location.reload();
+            });
+
+        });
+
+
+
+        // Handle adding comments
+        $(".comment-input").keypress(function (e) {
+            if (e.which == 13) {
+                var postId = $(this).data("post-id");
+                var commentText = $(this).val();
+                if (commentText) {
+                    var $commentInput = $(this);
+
+                    $.post("/Home/AddComment", { postId: postId, commentText: commentText }, function (response) {
+                        if (response.success) {
+                            var commentsSection = $commentInput.closest(".comments-section");
+                            loadComments(postId, commentsSection, $commentInput);
+                        } else {
+                            alert("Comment failed. Please try again.");
+                        }
+                    });
+                }
+            }
+        });
+
+        // Load comments for a post
+        function loadComments(postId, commentsSection, commentInput) {
+            $.get("/Home/GetComments", { postId: postId }, function (comments) {
+                var commentsList = commentsSection.find(".comments-list");
+                commentsList.empty();
+                $.each(comments, function (index, comment) {
+                    // Update the HTML structure to include the new properties
+                    commentsList.append("<li> <br/><div class='we-comment'>" +
+                        "<strong class='text-primary'>" + comment.UserName + "</strong>" +
+                        "<p>" + comment.Text + "</p>" +
+                        "</div></li>");
+                });
+
+                // Clear the comment input field after comments are loaded
+                commentInput.val("");
+            });
+        }
+
+
+        // Trigger the loadComments function for each post on page load
+        $(document).ready(function () {
+            $(".comment-input").each(function () {
+                var postId = $(this).data("post-id");
+                var commentsSection = $(this).closest(".comments-section");
+                loadComments(postId, commentsSection, $(this));
+            });
+        });
+
+        $(".show-likes-link").click(function () {
+            var postId = $(this).data("post-id");
+            $("#likesModal_" + postId).modal("show");
+        });
+        // Show/hide liked users list
+        $(".liked-users-toggle").click(function () {
+            $(this).siblings(".liked-users").toggle();
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,20 @@
+﻿@model WebApplication7.Models.ChatViewModel
+
+@{
+    ViewBag.Title = "Chat with " + Model.OtherUser.UserName;
+}
+
+<div class="container">
+    <h3>Chat with @Model.OtherUser.UserName</h3>
+
+    <div id="chatBox">
+        @foreach (var message in Model.Messages)
+        {
+            <div>
+                <strong>@message.Sender.UserName:</strong> @message.Content
+            </div>
+        }
+    </div>
+
+    <!-- Additional elements for sending messages, uploading images, etc. can be added here -->
+</div>
