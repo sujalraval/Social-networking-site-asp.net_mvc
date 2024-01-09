@@ -4,7 +4,45 @@
     ViewBag.Title = "Locked Out";
 }
 
-<hgroup>
-    <h1 class="text-danger">Locked out.</h1>
-    <h2 class="text-danger">This account has been locked out, please try again later.</h2>
-</hgroup>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Locked Out</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f4;
+            text-align: center;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .text-danger {
+            color: #d9534f; /* Bootstrap's danger color */
+        }
+
+        hgroup {
+            margin-bottom: 30px;
+        }
+
+        h1 {
+            font-size: 36px;
+            margin-bottom: 10px;
+        }
+
+        h2 {
+            font-size: 24px;
+        }
+    </style>
+</head>
+<body>
+    <hgroup>
+        <br />
+        <h1 class="text-danger">Locked out.</h1>
+        <h2 class="text-danger">This account has been locked out, please try again after 5 min.</h2>
+    </hgroup>
+</body>
+</html>
+

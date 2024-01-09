@@ -1494,7 +1494,6 @@
     <Content Include="Views\Home\_FollowersPartial.cshtml" />
     <Content Include="Views\Home\_FollowingPartial.cshtml" />
     <Content Include="Views\Message\Chat.cshtml" />
-    <Content Include="Views\Home\Chat.cshtml" />
     <Content Include="Views\Message\Index.cshtml" />
     <Content Include="Views\Shared\_RegisterLayout.cshtml" />
     <Content Include="Views\Shared\layout2.cshtml" />
