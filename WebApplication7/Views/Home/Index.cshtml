@@ -69,22 +69,34 @@
                                     </div>
                                     <!-- Display Followers -->
                                     <div class="widget stick-widget">
-                                        <h4 class="widget-title">Followers</h4>
+                                        <h4 class="widget-title">Search</h4>
                                         <ul class="followers">
-                                            @if (Model.Followings != null && Model.Followings.Any())
+                                            <!-- Search Form -->
+                                            @using (Html.BeginForm("Index", "Home", FormMethod.Post, new { role = "search", @class = "navbar-form navbar-left" }))
                                             {
-                                                foreach (var follower in Model.Followings)
+                                                <div class="form-group">
+                                                    <input type="text" name="query" class="form-control" placeholder="Search users">
+                                                </div>
+
+                                                if (Model != null && Model.SearchResults != null && Model.SearchResults.Count > 0)
                                                 {
-                                                    <li>
-                                                        <figure><img src="@Url.Content("~/Images/ProfileImages/" + follower.ProfileImagePath)" alt="" style="height:45px;width:45px;"></figure>
-                                                        <div class="friend-meta">
-                                                            <h4><a href="@Url.Action("UserProfile", "Home", new { userId = follower.Id })" title="">@follower.UserName</a></h4>
-                                                            <!-- You can add more follower information as needed -->
-                                                        </div>
-                                                    </li>
+                                                    <ul>
+                                                        @foreach (var user in Model.SearchResults)
+                                                        {
+                                                            <li>
+
+                                                                <span>
+                                                                    <img src="@Url.Content("~/Images/ProfileImages/" + user.ProfileImagePath)" alt="User Profile Image" style="height: 50px; width: 50px; border-radius: 50%;" />
+                                                                    <a href="@Url.Action("UserProfile", "Home", new { userId = user.UserId })">@user.UserName</a>
+                                                                </span>
+                                                            </li>
+                                                        }
+                                                    </ul>
                                                 }
                                             }
+                                            <!-- End Search Form -->
                                         </ul>
+                                        
                                     </div>
                                     <!-- End Display Followers -->
                                 </aside>
@@ -274,33 +286,22 @@
                                     <!-- search friends -->
 
 
-                                    <div class="widget friend-list stick-widget" style="position:absolute;">
-                                        <h4 class="widget-title">Search</h4>
+                                    <div class="widget stick-widget">
+                                        <h4 class="widget-title">Followers</h4>
                                         <ul class="followers">
-                                            <!-- Search Form -->
-                                            @using (Html.BeginForm("Index", "Home", FormMethod.Post, new { role = "search", @class = "navbar-form navbar-left" }))
+                                            @if (Model.Followings != null && Model.Followings.Any())
                                             {
-                                                <div class="form-group">
-                                                    <input type="text" name="query" class="form-control" placeholder="Search users">
-                                                </div>
-
-                                                if (Model != null && Model.SearchResults != null && Model.SearchResults.Count > 0)
+                                                foreach (var follower in Model.Followings)
                                                 {
-                                                    <ul>
-                                                        @foreach (var user in Model.SearchResults)
-                                                        {
-                                                            <li>
-
-                                                                <span>
-                                                                    <img src="@Url.Content("~/Images/ProfileImages/" + user.ProfileImagePath)" alt="User Profile Image" style="height: 50px; width: 50px; border-radius: 50%;" />
-                                                                    <a href="@Url.Action("UserProfile", "Home", new { userId = user.UserId })">@user.UserName</a>
-                                                                </span>
-                                                            </li>
-                                                        }
-                                                    </ul>
+                                                    <li>
+                                                        <figure><img src="@Url.Content("~/Images/ProfileImages/" + follower.ProfileImagePath)" alt="" style="height:45px;width:45px;"></figure>
+                                                        <div class="friend-meta">
+                                                            <h4><a href="@Url.Action("UserProfile", "Home", new { userId = follower.Id })" title="">@follower.UserName</a></h4>
+                                                            <!-- You can add more follower information as needed -->
+                                                        </div>
+                                                    </li>
                                                 }
                                             }
-                                            <!-- End Search Form -->
                                         </ul>
 
                                     </div>
