@@ -171,17 +171,17 @@
                                                         <div class="friend-name">
                                                             <ins>
                                                                 <a href="@Url.Action("UserProfile", "Home", new { userId = post.User.Id })">@post.User.UserName</a>
-                                                                <span style="font-size: 15px; color: #545454;">
+                                                                <span style="font-size: 15px; color: #545454;"> &nbsp;&nbsp;&nbsp;
                                                                     <!-- Display follow or unfollow link based on whether the user is already followed or not -->
                                                                     @if (!post.User.IsCurrentUser(User.Identity.GetUserId()))
                                                                     {
                                                                         if (post.User.IsFollowed(User.Identity.GetUserId()))
                                                                         {
-                                                                            <a href="#" class="unfollow-link" data-user-id="@post.User.Id" style="border: 1px solid #ccc; margin-left: 310px; padding: 5px; display: inline-block;">Unfollow</a>
+                                                                            <a href="#" class="unfollow-link" data-user-id="@post.User.Id">Unfollow</a>
                                                                         }
                                                                         else
                                                                         {
-                                                                            <a href="#" class="follow-link" data-user-id="@post.User.Id" style="border: 1px solid #ccc; margin-left: 310px; padding: 5px; display: inline-block;">Follow</a>
+                                                                            <a href="#" class="follow-link" data-user-id="@post.User.Id">Follow</a>
                                                                         }
                                                                     }
                                                                 </span>
